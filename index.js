@@ -70,6 +70,11 @@ module.exports = function (sails) {
       if (!taskName) {
         taskName = '';
       }
+      
+      var execArgs = process.execArgv.slice(0);
+      if(execArgs.indexOf('--debug') !== -1) {
+        execArgs.splice(execArgs.indexOf('--debug'),1)
+      }
 
       // Fork Grunt child process
       var child = ChildProcess.fork(
@@ -89,7 +94,8 @@ module.exports = function (sails) {
         // opts to pass to node's `child_process` logic
         {
           silent: true,
-          stdio: 'pipe'
+          stdio: 'pipe',
+          execArgv: execArgs
         }
       );
 
