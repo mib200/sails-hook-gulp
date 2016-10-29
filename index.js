@@ -203,7 +203,7 @@ module.exports = function (sails) {
 
       // Go ahead and get out of here, since Gulp might sit there backgrounded
       // if(sails.config.environment !== 'production'){
-      //  cb_afterTaskStarted();
+       cb_afterTaskStarted();
       // }
     }
   };
