@@ -1,6 +1,6 @@
 # gulp.js
 
-`gulp.js` hook for Sails v0.11
+`gulp.js` hook for Sails v0.12.8
 
 ## Status
 
@@ -29,7 +29,7 @@ The versioning of a hook closely mirrors that of the Sails version it depends on
 
 #### Are there changes?
 
-Yes, see the [v0.11 migration guide](http://sailsjs.org/#/documentation/concepts/Upgrading). You probably won't need to change anything unless you were extensively using the old Socket.io v0.9 configuration.
+Yes, see the [v0.12.8 migration guide](http://sailsjs.org/#/documentation/concepts/Upgrading). You probably won't need to change anything unless you were extensively using the old Socket.io v0.9 configuration.
 
 ## License
 
