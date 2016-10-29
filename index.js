@@ -6,7 +6,7 @@
  * @param  {*} chunk
  * @return {*}
  */
-function _sanitize (chunk) {
+function _sanitize(chunk) {
 
   if (chunk && typeof chunk === 'object' && chunk.toString) {
     chunk = chunk.toString();
@@ -28,11 +28,11 @@ module.exports = function (sails) {
   /**
    * Module dependencies
    */
-  var path  = require('path'),
-      appPath = sails.config.appPath,
-      appDependenciesPath = path.resolve(appPath, 'node_modules'),
-      Err = require(path.resolve(appDependenciesPath, 'sails/errors')), // tightens Sails error classes
-      ChildProcess = require('child_process');
+  var path = require('path'),
+    appPath = sails.config.appPath,
+    appDependenciesPath = path.resolve(appPath, 'node_modules'),
+    Err = require(path.resolve(appDependenciesPath, 'sails/errors')), // tightens Sails error classes
+    ChildProcess = require('child_process');
 
   return {
     /**
@@ -44,8 +44,9 @@ module.exports = function (sails) {
       sails.log.verbose('Loading app Gulpfile...');
 
       // Start task depending on environment
-      if(sails.config.environment === 'production'){
-        return this.runTask('prod', cb);
+      if (sails.config.environment === 'production') {
+        this.runTask('prod', cb);
+        return;
       }
 
       this.runTask('default', cb);
@@ -70,17 +71,17 @@ module.exports = function (sails) {
       if (!taskName) {
         taskName = '';
       }
-      
+
       var execArgs = process.execArgv.slice(0);
-      if(execArgs.indexOf('--debug') !== -1) {
-        execArgs.splice(execArgs.indexOf('--debug'),1)
+      if (execArgs.indexOf('--debug') !== -1) {
+        execArgs.splice(execArgs.indexOf('--debug'), 1)
       }
 
       // Fork Grunt child process
       var child = ChildProcess.fork(
 
         // cwd for child process
-        path.resolve(appDependenciesPath,'gulp/bin/gulp.js'),
+        path.resolve(appDependenciesPath, 'gulp/bin/gulp.js'),
 
         // cmd args+opts for child process
         [
@@ -88,7 +89,7 @@ module.exports = function (sails) {
           '--pathToSails=' + appPath,
 
           // Backwards compatibility for v0.9.x
-          '--gdsrc='+ appDependenciesPath
+          '--gdsrc=' + appDependenciesPath
         ],
 
         // opts to pass to node's `child_process` logic
@@ -111,12 +112,12 @@ module.exports = function (sails) {
 
         // Clean out all the whitespace
         var trimmedStackTrace = (typeof stackTrace === 'string') ? stackTrace : '';
-        trimmedStackTrace = trimmedStackTrace.replace(/[\n\s]*$/,'');
-        trimmedStackTrace = trimmedStackTrace.replace(/^[\n\s]*/,'');
+        trimmedStackTrace = trimmedStackTrace.replace(/[\n\s]*$/, '');
+        trimmedStackTrace = trimmedStackTrace.replace(/^[\n\s]*/, '');
 
         var trimmedConsoleMsg = (typeof consoleMsg === 'string') ? consoleMsg : '';
-        trimmedConsoleMsg = trimmedConsoleMsg.replace(/[\n\s]*$/,'');
-        trimmedConsoleMsg = trimmedConsoleMsg.replace(/^[\n\s]*/,'');
+        trimmedConsoleMsg = trimmedConsoleMsg.replace(/[\n\s]*$/, '');
+        trimmedConsoleMsg = trimmedConsoleMsg.replace(/^[\n\s]*/, '');
 
         // Remove '--force to continue' message since it makes no sense
         // in this context:
@@ -155,7 +156,7 @@ module.exports = function (sails) {
         }
 
         // Only display console message if it has content besides whitespace
-        else if ( !consoleMsg.match(/^\s*$/) ) {
+        else if (!consoleMsg.match(/^\s*$/)) {
           sails.log.verbose('Gulp :: ' + trimmedConsoleMsg);
         }
       });
@@ -182,16 +183,16 @@ module.exports = function (sails) {
 
       // When process is complete, fire event on `sails`
       child.on('exit', function (code, s) {
-        if ( code !== 0 ) {
+        if (code !== 0) {
           return sails.emit('hook:gulp:error');
         }
 
         sails.emit('hook:gulp:done');
-
         // Fire finish after gulp is done in production
-        if(sails.config.environment === 'production'){
-          cb_afterTaskStarted();
-        }
+        // if(sails.config.environment === 'production'){
+        cb_afterTaskStarted();
+        // }
+
       });
 
       // Since there's likely a watch task involved, and we may need
@@ -201,9 +202,9 @@ module.exports = function (sails) {
       sails.childProcesses.push(child);
 
       // Go ahead and get out of here, since Gulp might sit there backgrounded
-      if(sails.config.environment !== 'production'){
-         cb_afterTaskStarted();
-      }
+      // if(sails.config.environment !== 'production'){
+      //  cb_afterTaskStarted();
+      // }
     }
   };
 };
